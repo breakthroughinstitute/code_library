@@ -1,7 +1,20 @@
 #set up
 require(tidyverse); require(RCurl); require(grid); require(magick)
+require(showtext) #for using downloaded Futura font (must download or buy futura from internet first)
 bti_colors <- c("#0d4459", "#00a990", "#d05527", "#a33332",
                 "#b381d0",  "#dfb9a6", "#b2b2b1", "#2A2A2A", "#ecc627")
+
+#set font
+font_add(family="Futura", regular = "~/Library/Fonts/Futura Medium.ttf")
+showtext_auto()
+
+#alternative value if you dont have futura on comptuer is "Helvetica"
+font_family <-"Futura"   
+
+## IMPORTANT NOTE: Using the FUTURA Font (or other ones using Showtext package) prevents plots 
+## from showing up! You will need to export/save the plots to view them 
+## or view them with x11(plot_name), but this graphics views has low resolution. 
+
 
 # Function for Loading logo
 add_logo <- function(plot_path, logo_path, logo_position, logo_scale = 4){
@@ -53,6 +66,27 @@ add_logo <- function(plot_path, logo_path, logo_position, logo_scale = 4){
 }
 
 
+# Function for saving plot with logo
+save_plot_with_logo <- function(plot_name, file_name, width_in = 6.5, height_in = 6.5, logo_scale_factor = 4){
+  temp <- tempfile() #set temporary file location
+  
+  ggsave(filename = temp, device = "png", plot = plot_name, units = "in",
+         width = width_in, #set desired plot width
+         height = height_in) #set desired plot height  
+  
+  plot_with_logo <- add_logo(
+    plot_path = temp, # url or local file for the plot
+    logo_path = "https://thebreakthrough.imgix.net/Breakthrough_Institute_Logo_Medium.png", # url or local file for the logo
+    logo_position = "bottom right", # choose a corner: 'top left', 'top right', 'bottom left' or 'bottom right'
+    logo_scale = logo_scale_factor #as default. Can enter bigger number to make smaller, or smaller number to make logo bigger.
+  )
+  
+  plot_with_logo 
+  
+  magick::image_write(plot_with_logo, file_name)
+}
+
+
 # Example plot with facets  ------------------------------------------------
 p1 <- 
   mtcars %>% group_by(cyl, am) %>% summarize(avg_mpg = mean(mpg)) %>% 
@@ -61,8 +95,9 @@ p1 <-
   geom_col(position = "dodge") + #this is a column plot with columns colored by scenario
   facet_wrap(vars(am), ncol = 2, scales = "free_y") + #create separate plots for each value of a particular variable
   labs(title = "Example: MPG by Gear and AM", x = element_blank(), y = "Miles Per Gallon (mpg)") +
-  scale_fill_manual(values = cols, name = "Gear") + #name should be the variable used for grouping / coloring
-  theme(plot.title = element_text(color = "black",  size = 24),
+  scale_fill_manual(values = bti_colors, name = "Gear") + #name should be the variable used for grouping / coloring
+  theme(text =element_text(family = "Futura", size = 14),
+        plot.title = element_text(color = "black",  size = 24),
         strip.text.x = element_text(size = 14),
         #axis lines
         # axis.line.x = element_line(color="black", size = .25),
@@ -91,24 +126,4 @@ p1 <-
 p1
 
 
-# Save plot and add logo --------------------------------------------------
-#save plot to temporary file to add logo to 
-temp <- tempfile() #set temporary file location
-
-ggsave(filename = temp, device = "png", plot = p1, units = "in",
-       width = 6.5, #set desired plot width
-       height = 6.5) #set desired plot height
-
-#add logo
-plot_with_logo <- add_logo(
-  plot_path = temp, # url or local file for the plot
-  logo_path = "https://thebreakthrough.imgix.net/Breakthrough_Institute_Logo_Medium.png", # url or local file for the logo
-  logo_position = "bottom right" # choose a corner: 'top left', 'top right', 'bottom left' or 'bottom right'
-  #,logo_scale = 4 #as default. Can enter bigger number to make smaller, or smaller number to make logo bigger.
-)
-
-plot_with_logo 
-
-# save the image of the plot with logo to working director
-magick::image_write(plot_with_logo, "plot_with_logo.png")
-
+save_plot_with_logo(plot_name = p1, file_name = "plot_with_logo.png")
