@@ -1,6 +1,6 @@
 #set up
-require(tidyverse); require(RCurl); require(grid); require(magick)
-require(showtext) #for using downloaded Futura font (must download or buy futura from internet first)
+library(tidyverse); library(RCurl); library(grid); library(magick)
+library(showtext) #for using downloaded Futura font (must download or buy futura from internet first)
 bti_colors <- c("#0d4459", "#00a990", "#d05527", "#a33332",
                 "#b381d0",  "#dfb9a6", "#b2b2b1", "#2A2A2A", "#ecc627")
 
@@ -19,7 +19,7 @@ font_family <-"Futura"
 # Function for Loading logo
 add_logo <- function(plot_path, logo_path, logo_position, logo_scale = 4){
   
-  # Requires magick R Package https://github.com/ropensci/magick
+  # librarys magick R Package https://github.com/ropensci/magick
   
   # Useful error message for logo position
   if (!logo_position %in% c("top right", "top left", "bottom right", "bottom left")) {
