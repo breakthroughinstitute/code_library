@@ -86,44 +86,30 @@ save_plot_with_logo <- function(plot_name, file_name, width_in = 6.5, height_in 
   magick::image_write(plot_with_logo, file_name)
 }
 
-
-# Example plot with facets  ------------------------------------------------
-p1 <- 
-  mtcars %>% group_by(cyl, am) %>% summarize(avg_mpg = mean(mpg)) %>% 
-  mutate(cyl = as.factor(cyl)) %>% 
-  ggplot(aes(x = cyl, y = avg_mpg, fill = cyl)) + 
-  geom_col(position = "dodge") + #this is a column plot with columns colored by scenario
-  facet_wrap(vars(am), ncol = 2, scales = "free_y") + #create separate plots for each value of a particular variable
-  labs(title = "Example: MPG by Gear and AM", x = element_blank(), y = "Miles Per Gallon (mpg)") +
-  scale_fill_manual(values = bti_colors, name = "Gear") + #name should be the variable used for grouping / coloring
-  theme(text =element_text(family = "Futura", size = 14),
-        plot.title = element_text(color = "black",  size = 24),
-        strip.text.x = element_text(size = 14),
-        #axis lines
-        # axis.line.x = element_line(color="black", size = .25),
-        # axis.line.y = element_line(color="black", size = .25),
-        #gridlines
-        panel.grid.major.y = element_blank(), panel.grid.minor.y = element_blank(), 
-        panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(), 
-        #background and border
-        panel.border = element_blank(), #element_rect(color = "black", size = 1)
-        panel.background = element_rect(fill = "white", color = "black", size = 1),  #  #used for border around plot. set to black for faceted plots. white for others.
-        #legend
-        legend.position = "bottom", 
-        legend.key = element_rect(fill = "#FFFFFF00"),
-        legend.text = element_text(size=14),
-        legend.title = element_text(size=14),
-        #axes
-        axis.title.y = element_text(size = 16),
-        axis.title.x = element_blank(), #element_blank removes x axis labels. can set font size with element_text(size = 16),
-        axis.text.x=element_blank(), #remove x axis labels
-        axis.ticks.x=element_blank()#remove x axis labels
-        #logo 
-        ,plot.margin = unit(c(0.5, 0.5, 2, 0.5), "lines") #add margin for adding logo
-        ) + 
-  guides(fill = guide_legend(nrow=1, byrow=TRUE)) #set number of rows for legend to ensure it doesnt go off the sides of plot
-
-p1
-
-
-save_plot_with_logo(plot_name = p1, file_name = "plot_with_logo.png")
+#general plot theme
+theme_bti <- function (base_size = 14, base_family = "Helvetica") {
+  theme_classic() %+replace% 
+    theme(plot.title = element_text(color = "black",  size = 24), 
+          strip.text.x = element_text(size = 14),
+          strip.background = element_blank(),
+          
+          #gridlines
+          panel.grid.major.y = element_blank(), panel.grid.minor.y = element_blank(), #no grid lines
+          panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(), #no grid lines
+          #background and border
+          panel.border = element_blank(), #no plot border
+          #panel.background = element_rect(fill = "white"), #white panel background 
+          #legend
+          legend.position = "bottom", #legend default position is bottom
+          legend.key = element_rect(fill = "#FFFFFF00", color = NA), #no border around legend items
+          legend.text = element_text(size=14),
+          legend.title = element_text(size=14),
+          #axes
+          axis.line.x = element_line(color="black", size = .5),
+          axis.line.y = element_line(color="black", size = .5),
+          axis.title.y = element_text(size = 16, angle = 90), 
+          axis.title.x = element_text(size = 16), 
+          #logo 
+          plot.margin = unit(c(0.5, 0.5, 2, 0.5), "lines") # add space for logo
+    )
+}
