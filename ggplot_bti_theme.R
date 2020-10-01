@@ -1,12 +1,12 @@
 #set up
 library(tidyverse); library(RCurl); library(grid); library(magick)
-library(showtext) #for using downloaded Futura font (must download or buy futura from internet first)
+#library(showtext)  #for using downloaded Futura font (must download or buy futura from internet first)
 bti_colors <- c("#0d4459", "#00a990", "#d05527", "#a33332",
                 "#b381d0",  "#dfb9a6", "#b2b2b1", "#2A2A2A", "#ecc627")
 
 #set font
-font_add(family="Futura", regular = "~/Library/Fonts/Futura Medium.ttf")
-showtext_auto()
+#font_add(family="Futura", regular = "~/Library/Fonts/Futura Medium.ttf")
+#showtext_auto()
 
 #alternative value if you dont have futura on comptuer is "Helvetica"
 font_family <-"Futura"   
