@@ -3,35 +3,6 @@
 devtools::source_url("https://raw.githubusercontent.com/breakthroughinstitute/code_library/master/ggplot_bti_theme.R")
 
 
-#general plot theme
-theme_bti <- function (base_size = 14, base_family = "Helvetica") {
-  theme_classic() %+replace% 
-  theme(plot.title = element_text(color = "black",  size = 24), 
-        strip.text.x = element_text(size = 14),
-        strip.background = element_blank(),
-        
-        #gridlines
-        panel.grid.major.y = element_blank(), panel.grid.minor.y = element_blank(), #no grid lines
-        panel.grid.major.x = element_blank(), panel.grid.minor.x = element_blank(), #no grid lines
-        #background and border
-        panel.border = element_blank(), #no plot border
-        #panel.background = element_rect(fill = "white"), #white panel background 
-        #legend
-        legend.position = "bottom", #legend default position is bottom
-        legend.key = element_rect(fill = "#FFFFFF00", color = NA), #no border around legend items
-        legend.text = element_text(size=14),
-        legend.title = element_text(size=14),
-        #axes
-        axis.line.x = element_line(color="black", size = .5),
-        axis.line.y = element_line(color="black", size = .5),
-        axis.title.y = element_text(size = 16, angle = 90), 
-        axis.title.x = element_text(size = 16), 
-        #logo 
-        plot.margin = unit(c(0.5, 0.5, 2, 0.5), "lines") # add space for logo
-        )
-}
-
-
 #manually create data frame to graph with data you have from another source and don't want to import 
 data <- tibble(
   column1 = c("a", "b", "c", "a", "b", "c", "a", "b", "c", "a", "b"),
@@ -58,7 +29,7 @@ p <- data %>%  #select dataframe to use
   scale_fill_manual(values = bti_colors, name = "Legend") + #name should be the variable used for grouping / coloring
   scale_y_continuous(expand = c(0,0)) + #makes bottom of data align w/ x axis (removes space b/t axis and data)
   theme_bti() +
-  theme() #text = element_text(family = "Futura"), # add only when done since you can't see plot when using Futura font
+  theme( #text = element_text(family = "Futura"), # add only when done since you can't see plot when using Futura font
         ##titles    
         # plot.title = element_text(size = 24),  #  change title font size
         # strip.text.x = element_text(size = 14), # change facet title font size
@@ -97,4 +68,23 @@ p <- data %>%  #select dataframe to use
 
 p1
 
-save_plot_with_logo(plot_name = p1, file_name = "plot_with_logo.png")
+save_plot_with_logo(plot_name = p1, file_name = "column_plot_with_logo.png")
+
+
+
+# Scatter Plot ------------------------------------------------------------
+p2 <- data %>%  #select dataframe to use
+  ggplot(aes( #aes() is used to define the "aesthetics" like the variables used for x, y, color, shape, size etc. 
+    x = column4, 
+    y = column3)) + #you can have the fill, color of border, and other characteristics vary according to a variable's values. This iwll show up in legend by default
+  geom_point(aes(color = column2)) + #vary color by group
+  labs(title = "Example:  All Values ", #graph title.
+       x = "Year", #x axis title 
+       y = "Value") + #y axis title
+  scale_color_manual(values = bti_colors, name = "Legend") + #name should be the variable used for grouping / coloring
+  theme_bti() +
+  theme() # add any customizations in this theme argument
+
+p2
+
+save_plot_with_logo(plot_name = p2, file_name = "scatter_plot_with_logo.png")
