@@ -41,9 +41,9 @@ p <- data %>%  #select dataframe to use
         ##gridlines and border
         # panel.grid.major.y = element_line(size = .25), #add y axis grid line 
         # panel.grid.major.x = element_line(size = .25), #add x axis grid line
-        # panel.border = element_rect(color = "black", fill = NA, size = 1), #add border to plots. Should only be used for faceted plots
-        # axis.line.x = element_blank(), # if you add panel border, remove axes lines
-        # axis.line.y = element_blank(), # if you add panel border, remove axes lines
+         panel.border = element_rect(color = "black", fill = NA, size = 1), # add border to plots. Should only be used for faceted plots
+         axis.line.x = element_blank(), # if you add panel border, remove axes lines
+         axis.line.y = element_blank(), # if you add panel border, remove axes lines
         
         ##legend
         # legend.position = "none",  # remove legend
@@ -88,3 +88,19 @@ p2 <- data %>%  #select dataframe to use
 p2
 
 save_plot_with_logo(plot_name = p2, file_name = "scatter_plot_with_logo.png")
+
+
+
+# Unfaceted Bar Plot -------------------------------------------------------------
+
+data %>%  #select dataframe to use
+  group_by(column1, column2) %>% summarize(average_value = mean(column3)) %>% #summarize by group
+  ggplot(aes(x = column1, y = average_value, fill = column1)) +  #you can have the fill, color of border, and other characteristics vary according to a variable's values. This iwll show up in legend by default
+  geom_col(position = "dodge") + #this is a column plot with columns colored by group. deleting "dodge" will make it a stacked bar chart
+  labs(title = "Example: Mean Values by Group ", #graph title.
+       x = "Observation Name", #x axis title 
+       y = "Average Value") + #y axis title
+  scale_fill_manual(values = bti_colors, name = "Legend") + #name should be the variable used for grouping / coloring
+  scale_y_continuous(expand = expand_scale(mult = c(0, 0.1)))+ #makes bottom of data align w/ x axis (removes space b/t axis and data)
+  theme_bti() +
+  theme(plot.title = element_text(vjust = 1)) #add space between title & graph
