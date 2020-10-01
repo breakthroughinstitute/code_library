@@ -8,7 +8,7 @@ data <- tibble(
   column1 = c("a", "b", "c", "a", "b", "c", "a", "b", "c", "a", "b"),
   column2 = c("group1", "group1", "group1","group2", "group2","group2", "group1", "group1","group1", "group1", "group1"),
   column3 = c(1,2,3,4,5,6, 7, 8, 9, 10, 11),
-  column4 = c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010)
+  column4 = factor(c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010))
   )
 
 #faceted column plot
@@ -104,3 +104,20 @@ data %>%  #select dataframe to use
   scale_y_continuous(expand = expand_scale(mult = c(0, 0.1)))+ #makes bottom of data align w/ x axis (removes space b/t axis and data)
   theme_bti() +
   theme(plot.title = element_text(vjust = 1)) #add space between title & graph
+
+
+# Line Graph  -------------------------------------------------------------
+
+data %>%  #select dataframe to use
+  mutate(column4=as.numeric(column4)) %>% 
+  ggplot() +  #you can have the fill, color of border, and other characteristics vary according to a variable's values. This iwll show up in legend by default
+  geom_line(aes(x = column4, y = column3, color=column2)) +
+  labs(title = "Example: Values by Year ", #graph title.
+       x = "Year", #x axis title 
+       y = "Value") + #y axis title
+  scale_fill_manual(values = bti_colors, name = "Legend") + #name should be the variable used for grouping / coloring
+  scale_color_manual(values = bti_colors, name = "Legend") + #name should be the variable used for grouping / coloring
+  scale_y_continuous(expand = expand_scale(mult = c(0, 0.2)))+ #makes bottom of data align w/ x axis (removes space b/t axis and data)
+  theme_bti() +
+  theme(plot.title = element_text(vjust = 1),
+        plot.margin = unit(c(1, 1, 2, 1), "lines")) # add space for logo) #add space between title & graph
