@@ -1,17 +1,22 @@
 #set up
 library(tidyverse); library(RCurl); library(grid); library(magick)
-#library(showtext)  #for using downloaded Futura font (must download or buy futura from internet first)
+
+#set fonts 
+load_font <- function() {
+  text_font <<-  "Manuale"
+  title_font <<- "Futura"
+  print("Note: Download Futura.ttc and Manuale-Regular.ttf fonts first. Default location should be Library/Fonts/ folder. Url: https://www.dropbox.com/work/Style%20Guide/BTI%20Letterhead/Letterhead%20Font")
+  require(sysfonts) 
+  require(showtext)
+  sysfonts::font_add(family="Futura", regular = "~/Library/Fonts/Futura.ttc")
+  sysfonts::font_add(family="Manuale", regular = "~/Library/Fonts/manuale-regular.ttf")
+}
+
 bti_colors <- c("#0d4459", "#00a990", "#d05527", "#a33332",
                 "#b381d0",  "#dfb9a6", "#b2b2b1", "#2A2A2A", "#ecc627")
 
-#set font
-#font_add(family="Futura", regular = "~/Library/Fonts/Futura Medium.ttf")
-#showtext_auto()
 
-#alternative value if you dont have futura on comptuer is "Helvetica"
-font_family <-"Futura"   
-
-## IMPORTANT NOTE: Using the FUTURA Font (or other ones using Showtext package) prevents plots 
+## IMPORTANT NOTE: Using the FUTURA and Manuale Fonts (or other ones using Showtext package) prevents plots 
 ## from showing up! You will need to export/save the plots to view them 
 ## or view them with x11(plot_name), but this graphics views has low resolution. 
 
@@ -78,7 +83,7 @@ save_plot_with_logo <- function(plot_name, file_name, width_in = 6.5, height_in 
     plot_path = temp, # url or local file for the plot
     logo_path = "https://thebreakthrough.imgix.net/Breakthrough_Institute_Logo_Medium.png", # url or local file for the logo
     logo_position = "bottom right", # choose a corner: 'top left', 'top right', 'bottom left' or 'bottom right'
-    logo_scale = logo_scale_factor #as default. Can enter bigger number to make smaller, or smaller number to make logo bigger.
+    logo_scale = logo_scale_factor # 4 as default. Can enter bigger number to make smaller, or smaller number to make logo bigger.
   )
   
   plot_with_logo 
@@ -113,3 +118,10 @@ theme_bti <- function (base_size = 14, base_family = "Helvetica") {
           plot.margin = unit(c(0.5, 0.5, 2, 0.5), "lines") # add space for logo
     )
 }
+
+#theme for adding fonts
+add_fonts <- function () {
+  theme(plot.title = element_text(family = title_font), 
+        text = element_text(family =text_font))
+}
+          
