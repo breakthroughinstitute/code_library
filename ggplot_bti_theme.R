@@ -8,7 +8,7 @@ load_font <- function() {
   print("Note: Download Futura.ttc and Manuale-Regular.ttf fonts first. Default location should be Library/Fonts/ folder. Url: https://www.dropbox.com/work/Style%20Guide/BTI%20Letterhead/Letterhead%20Font")
   library(sysfonts) 
   library(showtext)
-  sysfonts::font_add(family="Futura", regular = "~/Library/Fonts/Futura.ttc")
+  sysfonts::font_add(family="Futura", regular = "~/Library/Fonts/Futura.ttc")  #~/../../System/Library/Fonts/Supplemental/Futura.ttc")   #ttf: -Medium-01.ttf
   sysfonts::font_add(family="Manuale", regular = "~/Library/Fonts/manuale-regular.ttf")
 }
 
@@ -121,7 +121,8 @@ theme_bti <- function (base_size = 14, base_family = "Helvetica") {
 
 #theme for adding fonts
 add_fonts <- function () {
-  theme(plot.title = element_text(family = title_font), 
-        text = element_text(family =text_font))
+  theme(#plot.title = element_text(family = title_font), 
+        text = element_text(family = text_font)
+        )
 }
           
