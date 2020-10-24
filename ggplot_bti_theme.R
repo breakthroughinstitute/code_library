@@ -6,8 +6,8 @@ load_font <- function() {
   text_font <<-  "Manuale"
   title_font <<- "Futura"
   print("Note: Download Futura.ttc and Manuale-Regular.ttf fonts first. Default location should be Library/Fonts/ folder. Url: https://www.dropbox.com/work/Style%20Guide/BTI%20Letterhead/Letterhead%20Font")
-  require(sysfonts) 
-  require(showtext)
+  library(sysfonts) 
+  library(showtext)
   sysfonts::font_add(family="Futura", regular = "~/Library/Fonts/Futura.ttc")
   sysfonts::font_add(family="Manuale", regular = "~/Library/Fonts/manuale-regular.ttf")
 }

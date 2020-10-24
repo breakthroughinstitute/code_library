@@ -1,5 +1,6 @@
 #template code for making BTI-style plot 
 #attach packages, load BTI colors, add_logo and save plot with logo functions
+library(devtools)
 devtools::source_url("https://raw.githubusercontent.com/breakthroughinstitute/code_library/master/ggplot_bti_theme.R")
 
 load_font() #comment this and the "add_fonts" functions below out if this gives you an error (e.g. you can't install showtext package)
@@ -31,7 +32,7 @@ p1 <- data %>%  #select dataframe to use
   scale_fill_manual(values = bti_colors, name = "Legend") + #name should be the variable used for grouping / coloring
   scale_y_continuous(expand = expand_scale(mult = c(0.0, 0.1)))+  #first number aligns bottom w/ x axis. second creates space b/t top of data and top of graph.
   theme_bti() +
-  theme( #text = element_text(family = font_family), # add only when done since you can't see plot when using Futura font
+  theme(
         ##titles    
         # plot.title = element_text(size = 16),  #  change title font size
         #strip.text.x = element_text(size = 14), # change facet title font size
@@ -117,7 +118,41 @@ p3 <- data %>%  #select dataframe to use
   scale_y_continuous(limits = c(0, NA), #set  y axis to start at 0 and continue until max value in dataset
                      expand = expand_scale(mult = c(0.0, 0.1)))+  #first number aligns bottom w/ x axis. second creates space b/t top of data and top of graph.
   theme_bti() +
-  theme()
+  theme(
+    ##titles    
+    # plot.title = element_text(size = 24),  #  change title font size
+    # strip.text.x = element_text(size = 14), # change facet title font size
+    
+    ## axis lines
+    axis.line.x = element_line(color="black", size = .25), #keep black axis line for bar graphs
+    #axis.line.y = element_line(color="black", size = .25),
+    
+    ##gridlines and border
+    panel.grid.major.y = element_line(size = .25), #add y axis grid line
+    # panel.grid.major.x = element_line(size = .25), #add x axis grid line
+    # panel.border = element_rect(color = "black", fill = NA, size = 1), # add border to plots. Should only be used for faceted plots
+    # axis.line.x = element_blank(), # if you add panel border, remove axes lines
+    axis.line.y = element_blank(), # if you add panel border, remove axes lines
+    
+    ##legend
+    legend.position = "none",  # remove legend
+    # legend.text = element_text(size=10), #change font size of legend items
+    # legend.title = element_text(size=14), #change font size of legend title
+    
+    ## axes
+    axis.title.y = element_text(margin = margin(t=0, r=10, b=0, l=0)), # change font size of axis title
+    # axis.title.y = element_blank(), # remove axis title 
+    # axis.title.x = element_text(size = 16), # change font size of axis title
+    axis.title.x = element_blank(), # remove axis title
+    
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1), #change angle and justification of x axis label
+    # axis.text.x = element_blank(), #remove axis label
+    # axis.text.y = element_text(size = 16), #change font size of  axis label text 
+    # axis.text.y = element_blank(), #remove axis labels
+    
+    axis.ticks.y = element_blank(), #remove axis tick marks
+    axis.ticks.x = element_blank() #remove axis tick marks 
+  )
 
 p3
 
